@@ -1,0 +1,103 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
+<link rel="import" href="../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
+<link rel="import" href="../bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="../bower_components/app-layout/app-header-layout/app-header-layout.html">
+<link rel="import" href="../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
+<link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="../bower_components/app-route/app-location.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../bower_components/iron-selector/iron-selector.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html">
+
+
+<dom-module id="my-app">
+	<template>
+		
+
+
+		<!-- Routes -->
+		<app-location route="{{route}}"></app-location>
+		<app-route route="{{route}}" pattern="/:view" data="{{pageData}}"></app-route>
+		<app-route route="{{route}}" pattern="/albuns/:ref" data="{{albunsData}}"></app-route>
+
+
+		<!-- App -->
+		<app-drawer-layout fullbleed>
+			
+			<!-- Left -->
+			<app-drawer>
+				<app-toolbar>Menu</app-toolbar>
+				<iron-selector selected="[[pageData.view]]" attr-for-selected="name">
+					<a name="artists" href="/artists">Artists</a>
+					<a name="albuns" href="/albuns">Albuns</a>
+				</iron-selector>
+			</app-drawer>
+
+
+			<!-- Header -->
+			<app-header-layout>
+				<app-header condenses reveals effects="">
+					<paper-toolbar>
+						<paper-icon-button icon="menu" drawer-toggle></paper-icon-button>
+						<div main-title>MusicApp</div>
+					</paper-toolbar>
+				</app-header>
+
+				<!-- Pages -->
+				<iron-pages id="Page" attr-for-selected="name" selected="[[pageData.view]]">
+					
+					<pwa-artists name="artists"></pwa-artists>
+					<pwa-albuns name="albuns" ref="[[albunsData.ref]]"></pwa-albuns>
+
+				</iron-pages>
+			</app-header-layout>
+		</app-drawer-layout>
+	</template>
+
+
+
+	<script>
+		Polymer({
+			is: 'my-app',
+
+
+			properties:
+			{
+				view:
+				{
+					type: String,
+					reflectToAttribute: true
+				}
+			},
+
+
+			observers: [
+				'_routeChanged(route)'
+			],
+
+
+			attached: function()
+			{
+				if (this.route.path == '/') {
+					this.set('route.path', '/artists');
+				}
+			},
+
+
+			_routeChanged: function()
+			{
+				console.log(this.pageData)
+				console.log(this.albunsData)
+
+				var resolvedPageUrl = this.resolveUrl('pwa-' +  this.pageData.view + '.html');
+				this.importHref(resolvedPageUrl, null, null, true);
+			}
+		});
+	</script>
+</dom-module>

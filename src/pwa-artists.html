@@ -1,0 +1,33 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="shared-styles.html">
+
+
+
+<dom-module id="pwa-artists">
+	<template>
+		
+		<h1>Artists</h1>
+
+		
+		<!-- Form -->
+		<iron-ajax auto url="https://api.vagalume.com.br/search.art?apikey=660a4395f992ff67786584e238f501aa&q=[[query]]&limit=10" handle-as="json" last-response="{{queryResult}}"></iron-ajax>
+		<paper-input label="Pesquisar artista..." value="{{query}}"></paper-input>
+
+
+		<!-- List -->
+		<template is="dom-repeat" items="[[queryResult.response.docs]]">
+			<p>
+				<a href="/albuns[[item.url]]">[[item.band]]</a>
+			</p>
+		</template>
+	
+	</template>
+
+
+
+	<script>
+		Polymer({
+			is: 'pwa-artists'
+		});
+	</script>
+</dom-module>

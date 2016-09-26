@@ -1,0 +1,28 @@
+<html><head><link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="shared-styles.html">
+
+
+
+</head><body><dom-module id="my-view1">
+  <template>
+    <style include="shared-styles"></style>
+    
+    <paper-input label="Pesquisar artista..." value="{{query}}"></paper-input>
+
+    <iron-ajax auto="" url="https://api.vagalume.com.br/search.art?apikey=660a4395f992ff67786584e238f501aa&amp;q=[[query]]&amp;limit=5" handle-as="json" last-response="{{queryResult}}"></iron-ajax>
+
+    <template is="dom-repeat" items="[[queryResult.response.docs]]">
+        <p>
+          <a href="/albuns/[[item.url]]">[[item.band]]</a>
+        </p>
+    </template>
+  
+  </template>
+
+
+
+  <script>Polymer({is:"my-view1"});</script>
+</dom-module>
+</body></html>

@@ -1,0 +1,52 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="shared-styles.html">
+
+
+
+<dom-module id="pwa-albuns">
+	<template>
+		
+		<h1>Albuns de [[ref]]</h1>
+
+		
+		<!-- ajax -->
+		<iron-ajax auto url="https://www.vagalume.com.br/[[ref]]/discografia/index.js" handle-as="json" last-response="{{queryResult}}"></iron-ajax>
+		
+
+		<!-- list -->
+		<template is="dom-repeat" items="[[queryResult.discography.item]]">
+			<article>
+				<figure><img src="http://vagalume.com.br/[[item.cover]]" alt=""></figure>
+				<h4>[[item.desc]]</h4>
+				<strong>[[item.published]]</strong>
+				<a href="/musics/[[item.url]]">Musicas</a>
+			</article>
+		</template>
+
+	</template>
+
+
+
+	<script>
+		Polymer({
+			is: 'pwa-albuns',
+
+
+			properties:
+			{
+				ref:
+				{
+					type: String,
+					reflectToAttribute: true
+				}
+			},
+
+			
+			ready: function()
+			{
+				console.log(this)
+				console.log(document.querySelector('iron-ajax'))
+			}
+		});
+	</script>
+</dom-module>
